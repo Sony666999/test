@@ -1,58 +1,96 @@
-from PyQt5 import Qt
-from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.QtWidgets import QWidget, QTextEdit, QPushButton, QTableWidget,QTableWidgetItem
+from PyQt6 import QtWidgets, uic
+from PyQt6.QtWidgets import QApplication, QMainWindow
+from PyQt6.QtWidgets import QWidget, QTextEdit, QPushButton, QTable-Widget,QTableWidgetItem
 import sys
 from library import*
 
 app = QtWidgets.QApplication([])
-win = uic.loadUi("rabochue.ui")
+win = uic.loadUi("рабочие.ui")
 
-data = EmployeeData()
-data.read_data_from_file("text.txt")
+Gr = Grup()
+Gr.read_data_from_file("text.txt")
 
-def btn_load_table():
-    win.tableWidget.setRowCount(len(data.employees))
+def btnLoadTable():
+    win.tableWidget.setRowCount(Gr.count)
     row = 0
-    for employee in data.employees.values():
-        win.tableWidget.setItem(row, 0, QtWidgets.QTableWidgetItem(employee.fio))
-        win.tableWidget.setItem(row, 1, QtWidgets.QTableWidgetItem(employee.department))
-        win.tableWidget.setItem(row, 2, QtWidgets.QTableWidgetItem(str(employee.work_days)))
-        win.tableWidget.setItem(row, 3, QtWidgets.QTableWidgetItem(str(employee.salary)))
+    for x in Gr.A:
+        # Фамилия
+        win.tableWidget.setItem(row, 0, QTableWidgetItem(Gr.A[x].fam))
+        # Имя
+        win.tableWidget.setItem(row, 1, QTableWidgetItem(Gr.A[x].name))
+        # Отчество
+        win.tableWidget.setItem(row, 2, QTable-WidgetItem(Gr.A[x].otchestvo))
+        # Номер
+        win.tableWidget.setItem(row, 3, QTable-WidgetItem(str(Gr.A[x].number)))
+        # Дни
+        win.tableWidget.setItem(row, 4, QTable-WidgetItem(str(Gr.A[x].days)))
+        # Деньги
+        win.tableWidget.setItem(row, 5, QTable-WidgetItem(str(Gr.A[x].moneys)))
         row += 1
 
-def btn_append_person():
-    fio = " ".join(win.lineEdit4.text().split())
-    department = win.lineEdit5.text()
-    work_days = int(win.lineEdit6.text())
-    salary = int(win.lineEdit7.text())
-    data.employees[fio] = Employee(fio, department, work_days, salary)
-    data.save_data_to_file("text.txt")
-    btn_load_table()
+def btnAppendPerson():
+    
+    List = [str(win.lineEdit_2.text()),str(win.lineEdit_3.text()),str(win.lineEdit_4.text()),\
+            str(win.lineEdit_5.text()),str(win.lineEdit_6.text()),str(win.lineEdit_7.text())]
+   
+    Gr.appendPerson(List)
+  
+    win.tableWidget.clear()
+    btnLoadTable()
+   
+ 
+def btnEditPerson():
+  
+    if win.lineEdit_8.text() == '' :
+        win.lineEdit_8.setText('1')
 
-def btn_edit_person():
-    row = win.tableWidget.currentRow()
-    if row != -1:
-        fio = " ".join(win.tableWidget.item(row, 0).text().split())
-        department = win.tableWidget.item(row, 1).text()
-        work_days = int(win.tableWidget.item(row, 2).text())
-        salary = int(win.tableWidget.item(row, 3).text())
-        data.employees[fio] = Employee(fio, department, work_days, salary)
-        data.save_data_to_file("text.txt")
-        btn_load_table()
+    if win.lineEdit_9.text() == '':    
+        win.lineEdit_9.setText('1')
+    
+    x = int(win.lineEdit_8.text())-1
+    y = int(win.lineEdit_9.text())-1
 
-def btn_del_person():
-    row = win.tableWidget.currentRow()
-    if row != -1:
-        fio = " ".join(win.tableWidget.item(row, 0).text().split())
-        data.employees.pop(fio, None)
-        data.save_data_to_file("text.txt")
-        btn_load_table()
+    if x <= win.tableWidget.rowCount() and y <= win.tableWidget.columnCount(): 
+         
+        List = [str(win.tableWidget.item(x,0).text()),\
+            str(win.tableWidget.item(x,1).text()),\
+            str(win.tableWidget.item(x,2).text()),\
+            str(win.tableWidget.item(x,3).text()),\
+            str(win.tableWidget.item(x,4).text()),\
+            str(win.tableWidget.item(x,5).text())]
+   
+        key = Gr.find_keyPerson(List)
+         
+        if key != -1 :
 
-win.pushButton.clicked.connect(btn_load_table)
-win.pushButton_3.clicked.connect(btn_append_person)
-win.pushButton_4.clicked.connect(btn_edit_person)
-win.pushButton_5.clicked.connect(btn_del_person)
+            win.tableWidget.setItem(x,y,QTableWidgetItem(str(win.lineEdit.text())))
+
+            List = [str(win.tableWidget.item(x,0).text()),\
+            str(win.tableWidget.item(x,1).text()),\
+            str(win.tableWidget.item(x,2).text()),\
+            str(win.tableWidget.item(x,3).text()),\
+            str(win.tableWidget.item(x,4).text()),\
+            str(win.tableWidget.item(x,5).text())]
+             
+            print(List)     
+            Gr.editPerson( key,List ) 
+
+def btnDelPerson():
+    
+    List = [str(win.lineEdit_2.text()),str(win.lineEdit_3.text()),str(win.lineEdit_4.text()),\
+            str(win.lineEdit_5.text()),str(win.lineEdit_6.text()),str(win.lineEdit_7.text())]
+
+    Gr.delPerson(List)
+  
+    win.tableWidget.clear()
+    
+    btnLoadTable()
+  
+win.pushButton.clicked.connect(btnLoadTable)
+win.pushButton_3.clicked.connect(btnAppendPerson)
+win.pushButton_4.clicked.connect(btnEditPerson)
+win.pushButton_5.clicked.connect(btnDelPerson)       
+
 
 win.show()
-sys.exit(app.exec_())
+sys.exit(app.exec())
