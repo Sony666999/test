@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+    <title>employee management system</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+
+table, th, td {
+    border: 1px solid black;
+}
+
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+
+input[type="text"] {
+    width: 100%;
+}
+
+
+.btn {
+    padding: 10px 20px;
+    margin: 10px;
+}
+
+
+data-table {
+
+pointer-events: none; /* Disable editing in table */
+
+}
+
+
+</style>
+
+
+</head>
+<body>
+    <table id="data-table">
+        <tr>
+            <th>last name</th>
+            <th>first name</th>
+            <th>middle name</th>
+            <th>department number</th>
+            <th>working days</th>
+            <th>salary</th>
+        </tr>
+        <tr>
+            <td id="lastname-cell"></td>
+            <td id="firstname-cell"></td>
+            <td id="middlename-cell"></td>
+            <td id="departmentnumber-cell"></td>
+            <td id="workingdays-cell"></td>
+            <td id="salary-cell"></td>
+        </tr>
+    </table>
+
+
+<button class="btn" id="addbtn">add</button>
+<button class="btn" id="editbtn">edit</button>
+<button class="btn" id="deletebtn">delete</button>
+<button class="btn" id="clearbtn">clear table</button>
+
+
+<script>
+    document.getElementById("addbtn").addEventListener("click", function() {
+        var lastname = document.getElementById("lastname").value;
+        var firstname = document.getElementById("firstname").value;
+        var middlename = document.getElementById("middlename").value;
+        var departmentnumber = document.getElementById("departmentnumber").value;
+        var workingdays = document.getElementById("workingdays").value;
+        var salary = document.getElementById("salary").value;
+
+
+var lastnameCell = document.getElementById("lastname-cell");
+var firstnameCell = document.getElementById("firstname-cell");
+var middlenameCell = document.getElementById("middlename-cell");
+var departmentnumberCell = document.getElementById("departmentnumber-cell");
+var workingdaysCell = document.getElementById("workingdays-cell");
+var salaryCell = document.getElementById("salary-cell");
+
+lastnameCell.innerHTML = lastname;
+firstnameCell.innerHTML = firstname;
+middlenameCell.innerHTML = middlename;
+departmentnumberCell.innerHTML = departmentnumber;
+workingdaysCell.innerHTML = workingdays;
+salaryCell.innerHTML = salary;
+
+});
+
+
+document.getElementById("clearbtn").addEventListener("click", function() {
+    var table = document.getElementById("data-table");
+    table.innerHTML = "<tr><th>last name</th><th>first name</th><th>middle name</th><th>department number</th><th>working days</th><th>salary</th></tr><tr><td id='lastname-cell'></td><td id='firstname-cell'></td><td id='middlename-cell'></td><td id='departmentnumber-cell'></td><td id='workingdays-cell'></td><td id='salary-cell'></td></tr>";
+});
+
+
+// additional logic for edit and delete buttons can be added here
+
+
+</script>
+
+
+</body>
+</html>
